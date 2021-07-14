@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import LinkCard from './components/LinkCard';
 import styled from 'styled-components';
+import IconCard, {Icons} from './components/IconCard';
 
 const CardHolder = styled.div`
     display:flex;
@@ -32,6 +33,28 @@ const makeLinks = () => {
   })
 }
 
+const makeIcons = () => {
+  const iconData = [
+    {
+      "link": "https://www.github.com",
+      "icon": 'github'
+    },
+    {
+      "link": "https://www.facebook.com",
+      "icon": 'facebook'
+    }
+  ]
+
+  return iconData.map(datum => {
+    const IconToRender = Icons[datum.icon];
+    const size = "100px"
+
+    return datum.link ? <IconCard link={datum.link}>
+      <IconToRender width={size} height={size} dropshadow="100px"/>
+    </IconCard> : <div></div>
+  })
+}
+
 function App() {
   return (
     <div className="App">
@@ -43,10 +66,9 @@ function App() {
 
         <CardHolder>
           {makeLinks()}
-          <LinkCard>
-            Some Link Goes Here!
-          </LinkCard>
         </CardHolder>
+
+        {makeIcons()}
 
       </header>
 

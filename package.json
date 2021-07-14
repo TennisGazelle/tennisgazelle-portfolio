@@ -14,6 +14,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "svgr": "svgr -d src/icons/ src/icons/ --icon --replace-attr-values \"filter=drop-shadow(4px 4px 1px #b71c1c)\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -36,5 +37,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@svgr/cli": "~5.5.0"
   }
 }
