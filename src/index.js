@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import PhoneChat from './components/phoneChat';
+import Editor from './components/VSCodeEditor';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {/* <App /> */}
+    {/* <PhoneChat /> */}
+    <Editor />
   </React.StrictMode>,
   document.getElementById('root')
 );

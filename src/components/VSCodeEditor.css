@@ -1,0 +1,136 @@
+/* body {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+	margin: 0;
+	box-sizing: border-box;
+	background-color: #1b1b1e;
+	font-family: Montserrat, sans-serif;
+	color: #b1b1b3;
+} */
+
+p,
+ul,
+ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.window {
+	width: auto;
+	height: auto;
+	margin: auto;
+	background-color: #000;
+	box-shadow: 0 0 25px -7px #000;
+}
+
+.window-top {
+	display: flex;
+	align-items: center;
+	height: 30px;
+	background-color: #202020;
+}
+
+.window__controls {
+	display: inline-flex;
+}
+
+.window__controls span {
+	width: 15px;
+	height: 15px;
+	margin-left: 10px;
+	border-radius: 50%;
+}
+
+.window__controls span:nth-child(1) {
+	background-color: #b22222;
+}
+.window__controls span:nth-child(2) {
+	background-color: #d6bf3e;
+}
+.window__controls span:nth-child(3) {
+	background-color: #4db434;
+}
+
+.window__title {
+	flex: 1;
+	text-align: center;
+	color: #b1b1b3;
+}
+
+.window-main {
+	padding: 0.5em;
+	color: #4e4e4e;
+}
+
+.window-main ol {
+	counter-reset: item;
+	font-family: "Source Code Pro", monospace;
+}
+
+.window-main ol li {
+	/* margin-bottom: 3px; */
+  display: block;
+  margin-bottom: .5em;
+  margin-left: 2em;
+}
+
+.window-main ol li:before {
+	content: counter(item) "  ";
+	counter-increment: item;
+	padding: 0 10px;
+
+  display: inline-block;
+  /* content: counter(item) ") "; */
+  /* counter-increment: item; */
+  width: 2em;
+  margin-left: -2em;
+}
+
+.window-main ol li:hover {
+  text-emphasis: bold;
+  text-decoration: underline;
+}
+
+a {
+  text-decoration: none;
+}
+
+.key {
+	color: #F92672;
+}
+.attr {
+	color: #8dc6e3;
+}
+.string {
+	color: #E6DB74;
+}
+.text {
+	color: #d4d4d4;
+}
+.number {
+	color: #AE81FF;
+}
+.comment {
+  color: #75715E;
+}
+
+@media only screen and (max-width: 601px) {
+	.window {
+		width: 350px;
+		/* height: 350px; */
+		font-size: 0.65em;
+	}
+
+	.window__controls span {
+		width: 10px;
+		height: 10px;
+		margin-left: 5px;
+	}
+
+	.window-main ol li:before {
+		padding: 0;
+	}
+}

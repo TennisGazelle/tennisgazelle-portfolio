@@ -24,8 +24,8 @@ const SvgTile = styled.button`
 
 let Icons = {};
 
-Icons['github'] = require('../icons/Github').default;
-Icons['facebook'] = require('../icons/Facebook').default;
+// Icons['github'] = require('../icons/Github').default;
+// Icons['facebook'] = require('../icons/Facebook').default;
 
 const reportClickingOnLink = (link) => {
     console.log(`clicked on ${link}`)
