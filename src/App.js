@@ -6,7 +6,6 @@ import IconCard, {Icons} from './components/IconCard';
 import CodeEditor from '@uiw/react-textarea-code-editor';
 import { useState } from 'react';
 import css from './glowing.module.scss';
-import PhoneChat from './components/phoneChat';
 import Editor from './components/VSCodeEditor';
 
 const CardHolder = styled.div`
