@@ -1,9 +1,28 @@
 import { useEffect, useState } from 'react'
 import './VSCodeEditor.css'
 
+const potentialJokes = {
+  'hotel': 'trivago',
+  'everything_else': 'mastercard',
+  'yee': 'haw',
+  'motivation': 'gone',
+  'tired': 'always',
+  'coincidence': 'I think not!',
+  'were_roommates': 'them',
+  'chickens': 'looked_at',
+  'does scooby got the booty': 'scooby doo',
+  'sha va cado': 'fre',
+  'croissant_dropped': 'almost, but no',
+  'memes': 'dank'
+}
+
+const keys = Object.keys(potentialJokes);
+const randKey = keys[Math.floor(Math.random() * keys.length)]
+
 const code = {
   "Daniel Lopez": {
     "Resume": "<- Click that word",
+    [randKey]: potentialJokes[randKey],
     // "or click any of these": [
     //   "Linktree",
     //   "Github",
@@ -129,6 +148,8 @@ const code = {
     // ]
   }
 }
+
+
 
 const findLineNumberGivenKeyPath = (jsonObj, key) => {
   let lines = JSON.stringify(jsonObj, null, 3).split('\n');
