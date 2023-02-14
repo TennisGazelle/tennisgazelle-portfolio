@@ -99,8 +99,10 @@ ol {
 }
 
 .window-main ol li:hover {
-  text-emphasis: bold;
-  text-decoration: underline;
+  font-style: italic;
+  /* text-emphasis: bold; */
+  /* text-decoration: */
+  /* text-size-adjust: 110%; */
 }
 
 a {

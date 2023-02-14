@@ -4,8 +4,15 @@ import './VSCodeEditor.css'
 const code = {
   "Daniel Lopez": {
     "Resume": "<- Click that word",
+    // "or click any of these": [
+    //   "Linktree",
+    //   "Github",
+    //   "LinkedIn",
+    //   "MuseScore",
+    //   "Spotify",
+    // ],
     "Education": {
-      "Masters's Degree": {
+      "Master's Degree": {
         "School": "University of Nevada, Reno",
         "Degree": "Masters of Computer Science",
         "Year": 2018,
@@ -14,7 +21,6 @@ const code = {
           "Multi CPU/GPU Programming",
           "Graphics Engines",
           "Neural Network Architecture",
-          "Capsule Network Optimization"
         ]
       },
       "Bachelor's Degree": {
@@ -118,19 +124,30 @@ const code = {
         "Citation": "Daniel Lopez, Orchestral Score. “Create Together #WithMe”, YouTube Originals, HitRecord series, S1 E4, “Today I Will Fly” (Cold Open)"
       }
     },
-    "Skills": {
-
-    }
+    // "Skills": [
+    //   ""
+    // ]
   }
 }
 
-const findScope = (jsonObj, lineNumber) => {
+const findLineNumberGivenKeyPath = (jsonObj, key) => {
+  let lines = JSON.stringify(jsonObj, null, 3).split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].indexOf(key) !== -1) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+const findScopeGivenLineNumber = (jsonObj, lineNumber) => {
   const lines = JSON.stringify(jsonObj, null, 3).split('\n');
   const openContainerRegex = /[[{]{1}/
   const closeContainerRegex = /[\]}]{1}/
 
-  var stack = [];
-  var checkingIndex = lineNumber;
+  let stack = [];
+  let checkingIndex = lineNumber;
 
   // console.log(jsonObj, lines[checkingIndex]);
   // console.log('is open, is close', openContainerRegex.test(lines[checkingIndex]), closeContainerRegex.test(lines[checkingIndex]))
@@ -175,18 +192,47 @@ const findScope = (jsonObj, lineNumber) => {
   return Array(end - start + 1).fill().map((_, idx) => start + idx)
 }
 
+const getLineNumbersForKey = (jsonObj, key, path = [], lineNumbers = {}) => {
+  for (const [k, v] of Object.entries(jsonObj)) {
+    const currentPath = [...path, k];
+
+    if (k === key) {
+      lineNumbers[currentPath.join(".")] = lineNumbers[currentPath.join(".")] || [];
+      lineNumbers[currentPath.join(".")].push(findLineNumberGivenKeyPath(jsonObj, key));
+      // return currentPath.join(".");
+    }
+
+    if (typeof v === "object" && v !== null) {
+      getLineNumbersForKey(v, key, currentPath, lineNumbers);
+    }
+  }
+
+  return lineNumbers;
+}
+
 // TODO: convert to typescript
 const Editor = () => {
   const [mutedLines, setMutedLines] = useState([]);
   const [lines, setLines] = useState([]);
   const manualLineLinks = {
+    // findLineNumberGivenKeyPath(code, "Resume").toString(): "http://tennisgazelle.com/resume.pdf",
     "2": "http://tennisgazelle.com/resume.pdf"
   }
-  const initialCollapsedLines = [4, 16, 30, 49, 70, 101, 105, 109]
+  const initialCollapsedLines = [
+    findLineNumberGivenKeyPath(code, "Master's Degree"),
+    findLineNumberGivenKeyPath(code, "Bachelor's Degree"),
+    findLineNumberGivenKeyPath(code, "Sky Hive AI"),
+    findLineNumberGivenKeyPath(code, "NoCap Shows"),
+    findLineNumberGivenKeyPath(code, "Intuit"),
+    findLineNumberGivenKeyPath(code, "Avaler's Adventure"),
+    findLineNumberGivenKeyPath(code, "Capsule Network Optimization"),
+    findLineNumberGivenKeyPath(code, "Today, I Will Fly"),
+    findLineNumberGivenKeyPath(code, "or click any of these"),
+  ]
 
   useEffect(() => {
     setLines(generateCodeAsLines(code));
-  }, [])
+  }, []);
 
   useEffect(() => {
     // any times the lines get updated, go through and figure out the muted lines
@@ -194,17 +240,17 @@ const Editor = () => {
 
     lines.forEach(line => {
       if (line.collapsed) {
-        const scopedLines = findScope(code, line.index);
+        const scopedLines = findScopeGivenLineNumber(code, line.index);
 
         // single lines need not collapse
         if (scopedLines.length > 1) {
           newMutedLines = [...newMutedLines, ...scopedLines];
         }
       }
-    })
+    });
 
     setMutedLines(newMutedLines);
-  }, [lines])
+  }, [lines, setLines])
 
   const clickedOnLine = (lineClicked) => {
     // is this line clickable?
@@ -219,11 +265,13 @@ const Editor = () => {
       // const newLinesToMute = findScope(code, lineClicked.index);
       // setMutedLines(mutedLines.filter(lineNum => newLinesToMute.indexOf(lineNum) === -1));
       setLines(lines.map((line, index) => {
-        return { ...line, collapsed: index === lineClicked.index ? false : line.collapsed }
+        return { 
+          ...line, 
+          collapsed: index === lineClicked.index ? false : line.collapsed }
       }))
     } else {
       // collapse
-      const newLinesToMute = findScope(code, lineClicked.index);
+      const newLinesToMute = findScopeGivenLineNumber(code, lineClicked.index);
       // setLines(lines.map((line, index) => {
       //   return { ...line, collapsed: index === lineClicked.index }
       // }));
@@ -231,14 +279,34 @@ const Editor = () => {
       if (newLinesToMute.length > 1) {
         // setMutedLines([...mutedLines, ...newLinesToMute]);
         setLines(lines.map((line, index) => {
-          return { ...line, collapsed: index === lineClicked.index ? true : line.collapsed }
+          return { 
+            ...line, 
+            collapsed: index === lineClicked.index ? true : line.collapsed }
         }));
       }
     }
   }
 
+  const clearMutedLines = () => {
+    setLines(lines.map(line => {
+      return {
+        ...line,
+        collapsed: false
+      }
+    }));
+  }
+
+  const resetMutedLines = () => {
+    setLines(lines.map((line, index) => {
+      return {
+        ...line,
+        collapsed: initialCollapsedLines.includes(index)
+      }
+    }));
+  }
+
   const generateCodeAsLines = (jsonObj) => {
-    var codeAsStr = JSON.stringify(jsonObj, null, 3);
+    let codeAsStr = JSON.stringify(jsonObj, null, 3);
     // escape these characters <, >, &
     codeAsStr = codeAsStr
                   .replace(/&/g, '&amp;')
@@ -255,7 +323,7 @@ const Editor = () => {
       }).join('\n');
     
     codeAsStr = codeAsStr.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, (match) => {
-      var cls = 'number';
+      let cls = 'number';
       if (/^"/.test(match)) {
         if (/:$/.test(match)) {
           cls = 'key';
@@ -272,7 +340,7 @@ const Editor = () => {
   
     const lines = codeAsStr.split('\n').map((line, index) => {
       const isKeyLine = line.indexOf('class="key"') !== -1;
-      var key = null;
+      let key = null;
       if (isKeyLine) {
         const regex = /<span class="key">"(.*?)":<\/span>/;
         const match = line.match(regex);
@@ -301,11 +369,11 @@ const Editor = () => {
     <section className="window">
       <div className="window-top">
         <div className="window__controls">
-          <span onClick={() => {setMutedLines([])}}></span>
           <span></span>
-          <span></span>
+          <span onClick={() => resetMutedLines()}></span>
+          <span onClick={() => clearMutedLines()}></span>
         </div>
-        <div className="window__title">Click on {mutedLines.length !== 0 ? 'close to expand all' : 'any key to collapse it'}</div>
+        <div className="window__title">Click on {mutedLines.length !== 0 ? 'green to expand all' : 'yellow to reset'}</div>
       </div>
       <div className="window-main">
         <ol>
