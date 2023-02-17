@@ -250,9 +250,11 @@ const Editor = () => {
     findLineNumberGivenKeyPath(code, "Today, I Will Fly"),
     findLineNumberGivenKeyPath(code, "or click any of these"),
   ]
+  const [indentSize, setIndentSize] = useState(3);
+  const [lastLineClicked, setLastLineClicked] = useState(-1);
 
   useEffect(() => {
-    setLines(generateCodeAsLines(code));
+    setLines(generateCodeAsLines(code, indentSize));
   }, []);
 
   useEffect(() => {
@@ -276,6 +278,7 @@ const Editor = () => {
   const clickedOnLine = (lineClicked) => {
     // is this line clickable?
     console.log('inside click callback', lineClicked)
+    setLastLineClicked(lineClicked.index);
     if (!lineClicked.isKeyLine) {
       return;
     }
@@ -326,8 +329,14 @@ const Editor = () => {
     }));
   }
 
-  const generateCodeAsLines = (jsonObj) => {
-    let codeAsStr = JSON.stringify(jsonObj, null, 3);
+  const handleIndentSizeDropdown = (event) => {
+    setIndentSize(Number(event.target.value));
+    // console.log(typeof event.target.value);
+    setLines(generateCodeAsLines(code, Number(event.target.value)))
+  }
+
+  const generateCodeAsLines = (jsonObj, indent=3) => {
+    let codeAsStr = JSON.stringify(jsonObj, null, indent);
     // escape these characters <, >, &
     codeAsStr = codeAsStr
                   .replace(/&/g, '&amp;')
@@ -358,13 +367,14 @@ const Editor = () => {
       }
       return '<span class="' + cls + '">' + match + '</span>'
     })
-  
+
+    const keySpanRegex = /<span class="key">"(.*?)":<\/span>/;
     const lines = codeAsStr.split('\n').map((line, index) => {
       const isKeyLine = line.indexOf('class="key"') !== -1;
+
       let key = null;
       if (isKeyLine) {
-        const regex = /<span class="key">"(.*?)":<\/span>/;
-        const match = line.match(regex);
+        const match = line.match(keySpanRegex);
         key = match[1] // guaranteed to exist
       }
 
@@ -408,16 +418,49 @@ const Editor = () => {
                 const closingChar = line.htmlLine[line.htmlLine.length-1] === '[' ? ']' : '}'
                 finalHtmlLine += '...' + closingChar;
               }
-
+              // console.log(typeof index);
               return <li
-                key={index}
-                value={index === 0 ? (line.index-1).toString() : ''}
+                key={"text-li-" + index.toString()}
+                value={index}
                 onClick={() => {clickedOnLine(line)}} 
                 dangerouslySetInnerHTML={{ __html: finalHtmlLine }}
               />
             })
           }
         </ol>
+      </div>
+      <div className='window-bottom'>
+        <div className='window-bottom-statictext'>master<super>*</super></div>
+
+
+        {lastLineClicked !== -1 && <div className='window-bottom-statictext'>Ln {lastLineClicked}</div>}
+
+
+        <div className='window-bottom-statictext'>
+
+          {"Spaces: "}
+          <select value={indentSize} onChange={handleIndentSizeDropdown}>
+            {[1, 2, 3, 4, 8].map(num => {
+              return <option key={"option-indent-size-" + num.toString()} value={num}>{num}</option>
+            })}
+          </select>
+
+          <select value={"UTF-8"}>
+            {["UTF-8", "What", "else", "could", "possibly", "be", "here?"].map((val, index) => {
+              return <option key={"option-indent-utf-" + index.toString()} value={val}>{val}</option>
+            })}
+          </select>
+
+          <select value={"JSON"}>
+            {["JSON", "YAML"].map((val, index) => {
+              let disabled = false;
+              if (val !== 'JSON') {
+                disabled = true
+              }
+              return <option key={"option-indent-language-" + index.toString()} value={val} disabled={disabled}>{val}</option>
+            })}
+          </select>
+        </div>
       </div>
     </section>
   )
