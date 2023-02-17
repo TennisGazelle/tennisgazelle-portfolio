@@ -1,6 +1,8 @@
-import { Component } from 'react';
-import styled from 'styled-components'
-import PropTypes from 'prop-types';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable react/prop-types */
+import React, { Component } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const RoundButton = styled.button`
     border-radius: 20px;
@@ -17,11 +19,11 @@ const RoundButton = styled.button`
         transform: translate(-3px, -3px);
     }
     
-`
+`;
 
 const TextBuffer = styled.div`
     padding: 15px
-`
+`;
 
 class LinkCard extends Component {
     render() {
@@ -31,7 +33,7 @@ class LinkCard extends Component {
                     {this.props.children}
                 </TextBuffer>
             </RoundButton>
-        </a>
+        </a>;
     }
 }
 

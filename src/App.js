@@ -1,110 +1,111 @@
-import logo from './logo.svg';
-import './App.css';
-import LinkCard from './components/LinkCard';
-import styled from 'styled-components';
-import IconCard, {Icons} from './components/IconCard';
-import CodeEditor from '@uiw/react-textarea-code-editor';
-import { useState } from 'react';
-import css from './glowing.module.scss';
-import Editor from './components/VSCodeEditor';
+import logo from "./logo.svg";
+import "./App.css";
+import LinkCard from "./components/LinkCard";
+import styled from "styled-components";
+import IconCard, {Icons} from "./components/IconCard";
+import CodeEditor from "@uiw/react-textarea-code-editor";
+import { useState } from "react";
+import css from "./glowing.module.scss";
+import Editor from "./components/VSCodeEditor";
+import React from "react";
 
 const CardHolder = styled.div`
     display:flex;
     flex-wrap:wrap;
     justify-content: center;
-`
+`;
 
 const makeLinks = () => {
-  const linkData = [
-    {
-      "link": "https://www.tennisgazelle.com",
-      "title": "TennisGazelle"
-    },
-    {
-      "link": "https://www.linktr.ee/tennisgazelle",
-      "title": "Link Tree"
-    },
-    {
-      "link": "https://www.musescore.com",
-      "title": "Musescore"
-    },
-  ]
+    const linkData = [
+        {
+            "link": "https://www.tennisgazelle.com",
+            "title": "TennisGazelle"
+        },
+        {
+            "link": "https://www.linktr.ee/tennisgazelle",
+            "title": "Link Tree"
+        },
+        {
+            "link": "https://www.musescore.com",
+            "title": "Musescore"
+        },
+    ];
 
-  return linkData.map(datum => {
-    return datum.link ? <LinkCard link={datum.link}>
-        {datum.title}
-    </LinkCard> : <div></div>
-  })
-}
+    return linkData.map(datum => {
+        return datum.link ? <LinkCard link={datum.link}>
+            {datum.title}
+        </LinkCard> : <div></div>;
+    });
+};
 
 
 const makeIcons = () => {
-  const iconData = [
-    {
-      "link": "https://www.github.com",
-      "icon": 'github'
-    },
-    {
-      "link": "https://www.facebook.com",
-      "icon": 'facebook'
-    }
-  ]
+    const iconData = [
+        {
+            "link": "https://www.github.com",
+            "icon": "github"
+        },
+        {
+            "link": "https://www.facebook.com",
+            "icon": "facebook"
+        }
+    ];
 
-  return iconData.map(datum => {
-    const IconToRender = Icons[datum.icon];
-    const size = "100px"
+    return iconData.map((datum, index) => {
+        const IconToRender = Icons[datum.icon];
+        const size = "100px";
 
-    return <div>{datum.link}</div>
+        return <div key={"datum-" + index.toString()}>{datum.link}</div>;
 
     // return datum.link ? <IconCard link={datum.link}>
     //   <IconToRender width={size} height={size} dropshadow="100px"/>
     // </IconCard> : <div></div>
-  })
-}
+    });
+};
 
 function App() {
 
-  const code = {
-    "Daniel Lopez": {
-      "resume": "<- Click that word",
-      "links": [
-          "github",
-          "twitter",
-          "musescore",
-          "hitrecord"
-      ],
-      "jobs": {
-          "Intuit Turbo Tax" : {
-              "role": "DevOps Engineer",
-              "experience": "2 years"
-          }
-      },
-      "school": {
-          "University of Nevada, Reno": {
-              "M.S.": 2018,
-              "B.S.": 2017
-          }
-      }
-    }
-  }
+    const code = {
+        "Daniel Lopez": {
+            "resume": "<- Click that word",
+            "links": [
+                "github",
+                "twitter",
+                "musescore",
+                "hitrecord"
+            ],
+            "jobs": {
+                "Intuit Turbo Tax" : {
+                    "role": "DevOps Engineer",
+                    "experience": "2 years"
+                }
+            },
+            "school": {
+                "University of Nevada, Reno": {
+                    "M.S.": 2018,
+                    "B.S.": 2017
+                }
+            }
+        }
+    };
 
-  const [codeAsString, setCodeAsString] = useState(JSON.stringify(code, {}, 3));
+    const [codeAsString, setCodeAsString] = useState(JSON.stringify(code, {}, 3));
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        {/* <img src={logo} className="App-logo" alt="logo" /> */}
-        {/* <p>
+    return (
+        <div className="App">
+            <header className="App-header">
+                {/* <img src={logo} className="App-logo" alt="logo" /> */}
+                {/* <p>
           Edit <code>src/App.js</code> and save to reload.
         </p> */}
 
-        {/* <CardHolder>
+                {/* <CardHolder>
           {makeLinks()}
         </CardHolder> */}
 
-        {/* {makeIcons()} */}
+                {/* {makeIcons()} */}
 
-        {/* <div className={`${css['shadow']}`}>hi there</div>
+                {/* <div className={`${css['shadow']}`}>hi there</div>
 
         <CodeEditor
           value={codeAsString}
@@ -119,14 +120,14 @@ function App() {
           }}
         /> */}
 
-      </header>
+            </header>
 
 
-        {/* <PhoneChat /> */}
+            {/* <PhoneChat /> */}
 
 
-    </div>
-  );
+        </div>
+    );
 }
 
 export default App;

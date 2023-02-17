@@ -1,6 +1,7 @@
-import { Component } from 'react';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+/* eslint-disable react/prop-types */
+import React, { Component } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const SvgTile = styled.button`
     // background-color: white;
@@ -20,7 +21,7 @@ const SvgTile = styled.button`
     & > * {
         drop-shadow: 100px
     }
-`
+`;
 
 let Icons = {};
 
@@ -28,20 +29,20 @@ let Icons = {};
 // Icons['facebook'] = require('../icons/Facebook').default;
 
 const reportClickingOnLink = (link) => {
-    console.log(`clicked on ${link}`)
-}
+    console.log(`clicked on ${link}`);
+};
 
 class IconCard extends Component {
-    onClick() {
+    // onClick() {
         
-    }
+    // }
 
     render() {
         return <a href={this.props.link}>
             <SvgTile onClick={reportClickingOnLink(this.props.link)}>
                 {this.props.children}
             </SvgTile>
-        </a>
+        </a>;
     }
 }
 
@@ -55,5 +56,5 @@ IconCard.propTypes = {
 
 export {
     Icons
-}
+};
 

@@ -33,6 +33,8 @@ ol {
 	margin: auto;
 	background-color: #000;
 	box-shadow: 0 0 25px -7px #000;
+	resize: horizontal;
+	/* padding-bottom: 5px; */
 }
 
 .window-top {
@@ -42,7 +44,7 @@ ol {
 	background-color: #202020;
 }
 
-/* * { outline: solid 0.05rem hsla(210, 100%, 100%, 0.5); } */
+/* 	* { outline: solid 0.05rem hsla(210, 100%, 100%, 0.5); } */
 
 
 .window__controls {
@@ -137,8 +139,9 @@ ol {
 	/* margin: 0 2%; */
 }
 
-a {
-  text-decoration: none;
+.line-link {
+	color: orange;
+	text-decoration: none;
 }
 
 .key {
@@ -149,6 +152,9 @@ a {
 }
 .string {
 	color: #E6DB74;
+}
+.boolean {
+	color: #AE81FF;
 }
 .text {
 	color: #d4d4d4;
@@ -162,9 +168,10 @@ a {
 
 @media only screen and (max-width: 601px) {
 	.window {
-		width: 350px;
-		height: 350px;
+		/* width: 350px;
+		height: 350px; */
 		font-size: 0.65em;
+		margin-top: 5%;
 	}
 
 	.window__controls span {
