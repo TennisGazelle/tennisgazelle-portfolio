@@ -2,18 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import reportWebVitals, { collectLatLong } from "./reportWebVitals";
 import Editor from "./components/VSCodeEditor";
-// import Carousel from "./components/Carousel";
+import Carousel, { carouselChildren } from "./components/Carousel";
 // import Carousel2 from "./components/Carousel2";
-
+import AmongUs from "./components/AmongUs";
 
 ReactDOM.render(
     <React.StrictMode>
         {/* <App /> */}
         {/* <PhoneChat /> */}
+
         <Editor />
-        {/* <Carousel /> */}
+        <AmongUs />
+
+        {/* <Carousel>
+            <Editor />
+            {carouselChildren}
+        </Carousel> */}
         {/* <Carousel2/> */}
     </React.StrictMode>,
     document.getElementById("root")
@@ -23,3 +29,4 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+collectLatLong();

@@ -10,4 +10,19 @@ const reportWebVitals = onPerfEntry => {
     }
 };
 
+const collectLatLong = () => {
+    if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            console.log(pos);
+        });
+    } else {
+        console.log("geolocation not in navigator");
+    }
+    return;
+};
+
 export default reportWebVitals;
+
+export {
+    collectLatLong
+};
