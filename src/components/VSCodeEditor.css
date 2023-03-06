@@ -23,6 +23,7 @@ p,
 ul,
 ol {
 	list-style-type: none;
+	/* list-style: none; */
 	margin: 0;
 	padding: 0;
 }
@@ -79,11 +80,13 @@ ol {
 	color: #4e4e4e;
 	max-height: 50em;
 	overflow-y: auto;
+	overflow-x: auto;
 }
 
 .window-main ol {
 	counter-reset: item;
 	font-family: "Source Code Pro", monospace;
+	white-space: nowrap;
 }
 
 .window-main ol li {

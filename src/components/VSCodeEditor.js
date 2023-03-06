@@ -15,6 +15,48 @@ const potentialJokes = {
     "sha va cado": "fre",
     "croissant_dropped": "almost, but no",
     "memes": "dank",
+    "Two Bros": {
+        "chillin": true,
+        "location": "hot tub",
+        "distance": "5ft",
+        "reason": "not gay"
+    },
+    "This Mans": {
+        "career": "about to end",
+        "reason": "me"
+    },
+    "Grape": "had surgery done",
+    "is_there_cake": false,
+    "Rick Astley": {
+        "give you up": false,
+        "let you down": false,
+        "run around and desert you": false,
+        "make you cry": false,
+        "say goodbye": false,
+        "tell a lie and hurt you": false,
+    },
+    "Obi-Wan Kenobi": {
+        "has": ["high ground"],
+        "underestimates": ["not anakin's power"],
+        "has_bad_feeling_about": "this"
+    },
+    "Anakin": {
+        "hates": ["sand", "the jedi"],
+        "overestimates": ["his own power", "palpatine"]
+    },
+    "Tween with Naruto Headband": {
+        "has_power_of": ["God", "Anime"],
+        "on_his_side": true
+    },
+    "Tom Holland's Spiderman": {
+        "feel_so_good": false
+    },
+    "Antoine Dodson": {
+        "recommends_hiding": ["kids", "wife"]
+    },
+    "Kid in Zombie Makeup": {
+        "likes": ["turtles"]
+    },
 };
 
 const keys = Object.keys(potentialJokes);
@@ -23,14 +65,9 @@ const randKey = keys[Math.floor(Math.random() * keys.length)];
 const code = {
     "Daniel Lopez": {
         "Resume": "{{resume}}",
-        [randKey]: potentialJokes[randKey],
-        // "or click any of these": [
-        //   "Linktree",
-        //   "Github",
-        //   "LinkedIn",
-        //   "MuseScore",
-        //   "Spotify",
-        // ],
+        "other quick links": [
+            "{{ql_linktree}}",
+        ],
         "Education": {
             "Master's Degree": {
                 "School": "University of Nevada, Reno",
@@ -57,10 +94,25 @@ const code = {
             },
         },
         "Work Experience": {
+            "Simple Rose": {
+                "Description": "High Performance Computing and Solver Optimization Startup",
+                "Location": "St. Louis, Missouri",
+                "Remote": true,
+                "Homepage": "{{simplerose_homepage_link}}",
+                "Positions": {
+                    "Full Stack Engineer": {
+                        "Start Date": "3/2023",
+                        "End Date": undefined,
+
+                        "Responsabilities": []
+                    }
+                }
+            },
             "Sky Hive AI": {
                 "Description": "Workforce Intelligence and Reskilling Startup",
                 "Location": "Toronto, Ontario, Canada",
                 "Remote": true,
+                "Homepage": "{{skyhive_homepage_link}}",
                 "Positions": {
                     "Senior DevOps Engineer": {
                         "StartDate": "11/2022",
@@ -81,7 +133,8 @@ const code = {
             "NoCap Shows": {
                 "Description": "Online Concert Streaming Services Startup",
                 "Location": "Malibu, CA",
-                "Remote": true, 
+                "Remote": true,
+                "Homepage": "{{nocap_homepage_link}}",
                 "Positions": {
                     "Full Stack Engineer": {
                         "StartDate": "8/2021",
@@ -104,6 +157,7 @@ const code = {
                 "Description": "Turbo Tax, Consumer Group",
                 "Location": "San Diego, CA",
                 "Remote": false,
+                "Homepage": "{{intuit_homepage_link}}",
                 "Positions": {
                     "Software Engineer 2": {
                         "StartDate": "01/2020",
@@ -133,15 +187,19 @@ const code = {
         "Publications": {
             "Avaler's Adventure": {
                 "Description": "Therapeutic Game for Speech Pathology Dept. at University of Nevada, Reno",
-                "Citation": "Catherine R. Pollock, Daniel A. Lopez, et al. (2017) “Avaler’s Adventure: An Open Source Game for Dysphagia Therapy”, Proceedings of the ISCA 26th International Conference on Software Engineering and Data Engineering (SEDE 2017)"
+                "Citation": "Catherine R. Pollock, Daniel A. Lopez, et al. (2017) “Avaler’s Adventure: An Open Source Game for Dysphagia Therapy”, Proceedings of the ISCA 26th International Conference on Software Engineering and Data Engineering (SEDE 2017)",
+                "Paper": "{{avalers_adventure}}"
             },
             "Capsule Network Optimization": {
                 "Description": "Paper derived from Thesis work; building Capsule Networks in raw CUDA, then using a Genetic Algorithm to determine hyperparameters",
-                "Citation": "Lopez, D. A., Wu, R., Barford, L., & Harris, F.C. (2019) A Memory Layout for Dynamically Routed Capsule Layers. In 16th Iternational Conference on Information Technology New Generations (ITNG 2019) (pp. 317-324)"
+                "Citation": "Lopez, D. A., Wu, R., Barford, L., & Harris, F.C. (2019) A Memory Layout for Dynamically Routed Capsule Layers. In 16th Iternational Conference on Information Technology New Generations (ITNG 2019) (pp. 317-324)",
+                "Paper": "{{capsule_network}}"
             },
             "Today, I Will Fly": {
                 "Description": "Original Composition for a YouTube Original",
-                "Citation": "Daniel Lopez, Orchestral Score. “Create Together #WithMe”, YouTube Originals, HitRecord series, S1 E4, “Today I Will Fly” (Cold Open)"
+                "Citation": "Daniel Lopez, Orchestral Score. “Create Together #WithMe”, YouTube Originals, HitRecord series, S1 E4, “Today I Will Fly” (Cold Open)",
+                "YouTube": "{{today_i_will_fly_youtube_link}}",
+                "MuseScore": "{{today_i_will_fly_musescore_link}}"
             },
             "Logan's Memory": {
                 "Description": "Single, Classical Music, 2023, DistroKidd",
@@ -149,10 +207,8 @@ const code = {
                 "Spotify": "{{spotify}}"
             }
         },
-    // "Skills": [
-    //   ""
-    // ]
-    }
+    },
+    [randKey]: potentialJokes[randKey],
 };
 
 const raw_lines = JSON.stringify(code, null, 3).split("\n");
@@ -217,23 +273,20 @@ const findScopeGivenLineNumber = (jsonObj, lineNumber) => {
     return Array(end - start + 1).fill().map((_, idx) => start + idx);
 };
 
-const getLineNumbersForKey = (jsonObj, key, path = [], lineNumbers = {}) => {
-    for (const [k, v] of Object.entries(jsonObj)) {
-        const currentPath = [...path, k];
-
-        if (k === key) {
-            lineNumbers[currentPath.join(".")] = lineNumbers[currentPath.join(".")] || [];
-            lineNumbers[currentPath.join(".")].push(findLineNumberGivenKeyPath(jsonObj, key));
-            // return currentPath.join(".");
-        }
-
-        if (typeof v === "object" && v !== null) {
-            getLineNumbersForKey(v, key, currentPath, lineNumbers);
-        }
-    }
-
-    return lineNumbers;
-};
+// const getLineNumbersForKey = (jsonObj, key, path = [], lineNumbers = {}) => {
+//     for (const [k, v] of Object.entries(jsonObj)) {
+//         const currentPath = [...path, k];
+//         if (k === key) {
+//             lineNumbers[currentPath.join(".")] = lineNumbers[currentPath.join(".")] || [];
+//             lineNumbers[currentPath.join(".")].push(findLineNumberGivenKeyPath(jsonObj, key));
+//             // return currentPath.join(".");
+//         }
+//         if (typeof v === "object" && v !== null) {
+//             getLineNumbersForKey(v, key, currentPath, lineNumbers);
+//         }
+//     }
+//     return lineNumbers;
+// };
 
 // TODO: convert to typescript
 const Editor = () => {
@@ -242,25 +295,70 @@ const Editor = () => {
     const [isLoading, setIsLoading] = useState(true);
     const lineLinks = {
         "resume": {
-            "link": "http://tennisgazelle.com/resume.pdf",
-            "displayText": "<- Clickable lines will be in orange ->"
+            link: "http://tennisgazelle.com/resume.pdf",
+            displayText: "<- Clickable lines will be in orange ->"
+        },
+        "ql_linktree": {
+            link: "https://linktr.ee/tennisgazelle",
+            displayText: "Link Tree"
         },
         "spotify": {
-            "link": "https://open.spotify.com/track/1m0usc3bqJnlDREUqU3REb?si=725fb8b7a51a499e",
-            "displayText": "Stream my first single here"
+            link: "https://open.spotify.com/track/1m0usc3bqJnlDREUqU3REb?si=725fb8b7a51a499e",
+            displayText: "Stream my first single here"
         },
+        "capsule_network": {
+            link: "https://www.cse.unr.edu/~fredh/papers/conf/194-amlfdrcl/paper.pdf",
+            displayText: "Paper (PDF)"
+        },
+        "avalers_adventure": {
+            link: "https://www.cse.unr.edu/~fredh/papers/conf/180-aaaosgfdt/paper.pdf",
+            displayText: "Paper (PDF)"
+        },
+        "today_i_will_fly_youtube_link": {
+            link: "https://www.youtube.com/watch?v=-fl6HTIRjOg&t=46s&ab_channel=HITRECORD",
+            displayText: "The Video (Sample)",
+            embed: "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/-fl6HTIRjOg\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen>Youtube</iframe>"
+        },
+        "today_i_will_fly_musescore_link": {
+            link: "https://musescore.com/user/4187496/scores/6267911",
+            displayText: "The Score (Full; Sample starts at )"
+        },
+        "simplerose_homepage_link": {
+            link: "https://simplerose.com/index.html",
+            displayText: "Simple Rose Home Page"
+        },
+        "skyhive_homepage_link": {
+            link: "https://www.skyhive.ai/",
+            displayText: "Sky Hive Page"
+        },
+        "nocap_homepage_link": {
+            link: "https://nocapshows.com/",
+            displayText: "No Cap Page"
+        },
+        "intuit_homepage_link": {
+            link: "https://www.intuit.com/",
+            displayText: "Intuit Home Page"
+        }
     };
     const initialCollapsedLines = [
+        findLineNumberGivenKeyPath(code, "Education"),
         findLineNumberGivenKeyPath(code, "Master's Degree"),
         findLineNumberGivenKeyPath(code, "Bachelor's Degree"),
+
+        findLineNumberGivenKeyPath(code, "Work Experience"),
+        findLineNumberGivenKeyPath(code, "Simple Rose"),
         findLineNumberGivenKeyPath(code, "Sky Hive AI"),
         findLineNumberGivenKeyPath(code, "NoCap Shows"),
         findLineNumberGivenKeyPath(code, "Intuit"),
+
+        findLineNumberGivenKeyPath(code, "Publications"),
         findLineNumberGivenKeyPath(code, "Avaler's Adventure"),
         findLineNumberGivenKeyPath(code, "Capsule Network Optimization"),
         findLineNumberGivenKeyPath(code, "Today, I Will Fly"),
         findLineNumberGivenKeyPath(code, "Logan's Memory"),
-        findLineNumberGivenKeyPath(code, "or click any of these"),
+        // findLineNumberGivenKeyPath(code, "or click any of these"),
+
+        findLineNumberGivenKeyPath(code, randKey),
     ];
     const [indentSize, setIndentSize] = useState(3);
     const [lastLineClicked, setLastLineClicked] = useState(-1);
@@ -388,6 +486,11 @@ const Editor = () => {
             const mustache_key = match.replace("{{", "").replace("}}", "");
             const displaytext = lineLinks[mustache_key]["displayText"];
             const link = lineLinks[mustache_key]["link"];
+            const embed = lineLinks[mustache_key]["embed"];
+
+            if (embed) {
+                return embed;
+            }
 
             return "<a class=\"line-link\" href=\"" + link + "\">" + displaytext + "</a>";
         });
@@ -437,13 +540,17 @@ const Editor = () => {
                         .map((line, index) => {
                             let finalHtmlLine = line.htmlLine;
                             if (line.collapsed) {
-                                const closingChar = line.htmlLine[line.htmlLine.length-1] === "[" ? "]" : "}";
-                                finalHtmlLine += "..." + closingChar;
+                                const penultimateChar = line.htmlLine[line.htmlLine.length-1];
+
+                                if (["[", "{"].indexOf(penultimateChar) !== -1) {
+                                    const closingChar = penultimateChar === "[" ? "]" : "}";
+                                    finalHtmlLine += "..." + closingChar;
+                                }
                             }
                             // console.log(typeof index);
                             return <li
                                 key={"text-li-" + index.toString()}
-                                value={index}
+                                value={line.index}
                                 onClick={() => {clickedOnLine(line);}} 
                                 dangerouslySetInnerHTML={{ __html: finalHtmlLine }}
                             />;
