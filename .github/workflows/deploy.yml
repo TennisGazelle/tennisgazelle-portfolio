@@ -8,27 +8,28 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [17.x] # or choose a different version of Node.js
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+
     - name: Install dependencies
       run: |
         npm install
+
     - name: Build the site
       run: |
-        npm run build
+        CI=false npm run build
+
     - name: Configure custom domain
       run: |
         echo 'tennisgazelle.com' > ./build/CNAME
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3.7.0
       with:
