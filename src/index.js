@@ -3,8 +3,8 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals, { collectLatLong } from "./reportWebVitals";
-import Editor from "./components/VSCodeEditor";
-import Carousel, { carouselChildren } from "./components/Carousel";
+import VSCodeEditor, { VSCodeEditorAsPage } from "./components/VSCodeEditor";
+import Carousel, { carouselChildren, sources } from "./components/Carousel";
 // import Carousel2 from "./components/Carousel2";
 import AmongUs from "./components/AmongUs";
 
@@ -13,13 +13,17 @@ ReactDOM.render(
         {/* <App /> */}
         {/* <PhoneChat /> */}
 
-        <Editor />
+        <VSCodeEditorAsPage />
         <AmongUs />
 
         {/* <Carousel>
+            <h1>hi there</h1>
+            <h2>the second elem</h2>
+            <p>whoa now, we got 3?</p>
             <Editor />
-            {carouselChildren}
+            {carouselChildren(sources)}
         </Carousel> */}
+
         {/* <Carousel2/> */}
     </React.StrictMode>,
     document.getElementById("root")

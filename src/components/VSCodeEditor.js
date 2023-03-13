@@ -1,5 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useEffect, useState } from "react";
+import { BsArrowRepeat } from "react-icons/bs";
 import "./VSCodeEditor.css";
 
 const potentialJokes = {
@@ -288,11 +289,18 @@ const findScopeGivenLineNumber = (jsonObj, lineNumber) => {
 //     return lineNumbers;
 // };
 
+const VSCodeEditorAsPage = () => {
+    return <div className="window_page">
+        <VSCodeEditor />
+    </div>;
+};
+
 // TODO: convert to typescript
-const Editor = () => {
+const VSCodeEditor = () => {
     const [mutedLines, setMutedLines] = useState([]);
     const [lines, setLines] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [isDoingBarrelRoll, setIsDoingBarrelRoll] = useState(false);
     const lineLinks = {
         "resume": {
             link: "http://tennisgazelle.com/resume.pdf",
@@ -385,6 +393,16 @@ const Editor = () => {
         setMutedLines(newMutedLines);
         setIsLoading(false);
     }, [lines]);
+
+    useEffect(() => {
+        let timer;
+        if (isDoingBarrelRoll) {
+            timer = setTimeout(() => {
+                setIsDoingBarrelRoll(false);
+            }, 2000); // turn off animation after 2 seconds
+        }
+        return () => clearTimeout(timer);
+    }, [isDoingBarrelRoll]);
 
     const clickedOnLine = (lineClicked) => {
     // is this line clickable?
@@ -522,7 +540,7 @@ const Editor = () => {
     };
 
     return !isLoading && (
-        <section className="window">
+        <section className={`window ${isDoingBarrelRoll ? "animate" : ""}`}>
             <div className="window-top">
                 <div className="window__controls">
                     <span></span>
@@ -559,7 +577,13 @@ const Editor = () => {
                 </ol>
             </div>
             <div className='window-bottom'>
-                <div className='window-bottom-statictext'>master<super>*</super></div>
+                <div className='window-bottom-statictext'>
+                    master<super>*</super>
+                    {" "}
+                    <BsArrowRepeat onClick={() => {setIsDoingBarrelRoll(true);}}/>
+                </div>
+
+                <div className='window-bottom-statictext'></div>
 
                 {lastLineClicked !== -1 && <div className='window-bottom-statictext'>Ln {lastLineClicked}</div>}
 
@@ -593,8 +617,9 @@ const Editor = () => {
     );
 };
 
-export default Editor;
+export default VSCodeEditor;
 
 export {
     code,
+    VSCodeEditorAsPage
 };
