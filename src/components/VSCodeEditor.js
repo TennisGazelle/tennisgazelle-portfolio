@@ -95,11 +95,11 @@ const code = {
             },
         },
         "Work Experience": {
-            "Simple Rose": {
-                "Description": "High Performance Computing and Solver Optimization Startup",
+            "[REDACTED]": {
+                "Description": "[REDACTED] Startup",
                 "Location": "St. Louis, Missouri",
                 "Remote": true,
-                "Homepage": "{{simplerose_homepage_link}}",
+                // "Homepage": "{{simplerose_homepage_link}}",
                 "Positions": {
                     "Full Stack Engineer": {
                         "Start Date": "3/2023",
@@ -303,8 +303,9 @@ const VSCodeEditor = () => {
     const [isDoingBarrelRoll, setIsDoingBarrelRoll] = useState(false);
     const lineLinks = {
         "resume": {
-            link: "http://tennisgazelle.com/resume.pdf",
-            displayText: "<- Clickable lines will be in orange ->"
+            // link: "http://tennisgazelle.com/resume.pdf",
+            displayText: "<- Clickable lines will be in orange ->",
+            link: "mailto:daniellopez123456789@gmail.com?subject=Resume%20Request&body=Hi%20Daniel%2C%0A%0ACould%20you%20please%20send%20me%20a%20copy%20of%20your%20resume%3F%0A%0AThanks!%0A"
         },
         "ql_linktree": {
             link: "https://linktr.ee/tennisgazelle",
